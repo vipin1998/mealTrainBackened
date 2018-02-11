@@ -8,6 +8,7 @@ var port = process.env.PORT||8080;
 var users = require('./routes/user');
 var admin = require('./routes/admin');
 var order = require('./routes/order');
+var train = require('./routes/train');
 
 var app = express();
 
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/user',users);
 app.use('/admin',admin);
 app.use('/order',order);
+app.use('/train',train);
 
 app.listen(port,function(err)
 {
