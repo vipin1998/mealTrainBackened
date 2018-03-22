@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const dishSchema = new Schema({
+    id : {
+        type: Number,
+        required: true,
+        unique : true
+    },
     name: {
         type: String,
         required: true,
@@ -11,7 +16,7 @@ const dishSchema = new Schema({
         type: String,
         required: true
     },
-    imageUrl:{
+    image:{
         type : String,
         unique : true,
         required : true
@@ -19,8 +24,15 @@ const dishSchema = new Schema({
     price:{
         type : Number,
         required : true
-    }
-
+    },
+    featured : {
+        type : Boolean,
+        required : true
+    },
+    comments : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 });
 
 var Dishes = mongoose.model('Dish', dishSchema);

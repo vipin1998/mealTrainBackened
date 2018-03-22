@@ -4,45 +4,64 @@ var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
 var authenticate = require('../authenticate');
-
+const cors = require('./cors');
 
 var userRoutes = express.Router();
 userRoutes.use(bodyParser.json());
 
-
-
 var User = require('./models/users');
 
-userRoutes.post('/check', function(req, res)
+
+userRoutes
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.post('/login',cors.corsWithOptions, function(req, res)
 {    
-    User.find({'phone' : req.body.phone}, function(err , old_user)
+    User.find({'phone' : req.body.phone,'password' : req.body.password}, function(err , old_user)
     {
         if(old_user.length != 0)
         {
             var token = authenticate.getToken({_id: old_user[0]._id});
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({success: true, token: token, status: 'You are successfully logged in!'});   
+            res.json({success: true, token: token, status: old_user[0]["name"]});   
         }
         else
         {
-            res.send('Welcome');
+            res.statusCode = 401;
+            res.setHeader('Content-Type', 'application/json');
+            res.json({success: false, token:'none' , status: 'Invalid Username or Password'})
         }
     })
 });
 
-userRoutes.post('/signUp', function(req, res)
+userRoutes
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.post('/register', cors.corsWithOptions, function(req, res)
 {    
-    User.create(req.body , function(err,new_user)
+    User.find({'phone' : req.body.phone}, function(err , old_user)
     {
-        if (err)
+        if(old_user.length != 0)
         {
-            throw err;
-        };
-        var token = authenticate.getToken({_id: new_user._id});
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json({success: true, token: token, status: 'You are successfully logged in!'});
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json({success: false, token: 'none', status: 'Mobile Number already Exist'});  
+        }
+        else
+        {
+            User.create(req.body , function(err,new_user)
+            {
+                if (err)
+                {
+                    throw err;
+                }
+                else
+                {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json({success: true, token: 'none', status: 'Registeration Successfully'}); 
+                }
+            })
+        }
     })
 });
 

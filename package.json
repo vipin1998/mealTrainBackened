@@ -9,8 +9,10 @@
   "author": "Vipin Kumar",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
+    "mongodb-stitch": "^3.0.2",
     "mongoose": "^4.13.9",
     "morgan": "^1.9.0",
     "node-fetch": "^2.0.0",

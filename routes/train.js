@@ -4,13 +4,19 @@ var mongoose = require('mongoose');
 const https = require('https');
 var config = require('../config');
 const fetch = require('node-fetch');
+const cors = require('./cors');
+
 
 var Station = require('./models/stations');
 
 
 var trainRoutes = express.Router();
 trainRoutes.use(bodyParser.json());
-trainRoutes.get('/:trainNumber', function(req,res)
+
+
+trainRoutes
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get('/query/:trainNumber', cors.cors, function(req,res)
 {
     var trainNumber = req.params.trainNumber;
     const options = {
@@ -26,15 +32,36 @@ trainRoutes.get('/:trainNumber', function(req,res)
     {
       
       var stat = []
+      
       for(var i=0;i<json["route"].length;i++)
       {
-        stat.push(json["route"][i]["station"]["code"]);
+        var dict = { };
+        dict["name"] = json["route"][i]["station"]["name"];
+        dict["code"] =json["route"][i]["station"]["code"];
+        stat.push(dict);
       }
       res.send(stat)
+      
     })
     .catch(err => console.error(err))
 });
 
 
+trainRoutes
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get('/allStations' , cors.cors, function(req , res)
+{
+    Station.find({},{_id : 0,code : 1, name : 1} , function (err , stat)
+    {
+        if(err)
+        {
+          throw err;
+        }
+        else
+        {
+          res.send(stat)
+        }
+    })
+})
 
 module.exports = trainRoutes;

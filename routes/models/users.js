@@ -17,6 +17,11 @@ const userSchema = new Schema({
         unique : true,
         required : true
     },
+    password : 
+    {
+        type: String,
+        required: true,
+    },
     Cart : [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Dish'

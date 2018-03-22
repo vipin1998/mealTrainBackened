@@ -11,15 +11,10 @@ const stationSchema = new Schema({
         unique : true,
         required: true
     },
-    available:{
-        type : Boolean,
-        required : true
-    },
     dishes:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Dish'
     }]
-
 });
 
 var Stations = mongoose.model('Station', stationSchema);

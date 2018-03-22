@@ -11,6 +11,7 @@ var Verify = require('./verify');
 var adminRoutes = express.Router();
 adminRoutes.use(bodyParser.json());
 
+
 adminRoutes.post('/addDish' ,Verify.checkAdmin , function(req,res)
 {
     Dish.create(req.body , function(err)

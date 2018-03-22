@@ -7,12 +7,12 @@ const orderSchema = new Schema({
         required: true,
     },
     pnr:{
-        type : String,
+        type : Number,
         required : true
     },
     station : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Station'
+        type : String,
+        required : true
     },
     user : {
         type: mongoose.Schema.Types.ObjectId,
