@@ -4,19 +4,12 @@ var mongoose = require('mongoose');
 const https = require('https');
 var config = require('../config');
 const fetch = require('node-fetch');
-const cors = require('./cors');
-
-
 var Station = require('./models/stations');
-
-
 var trainRoutes = express.Router();
 trainRoutes.use(bodyParser.json());
 
 
-trainRoutes
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.get('/query/:trainNumber', cors.cors, function(req,res)
+trainRoutes.get('/query/:trainNumber', function(req,res)
 {
     var trainNumber = req.params.trainNumber;
     const options = {
@@ -47,9 +40,7 @@ trainRoutes
 });
 
 
-trainRoutes
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.get('/allStations' , cors.cors, function(req , res)
+trainRoutes.get('/allStations' , function(req , res)
 {
     Station.find({},{_id : 0,code : 1, name : 1} , function (err , stat)
     {

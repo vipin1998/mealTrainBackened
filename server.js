@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var MongoClient = require('mongodb').MongoClient;
+var cors = require('cors')
 var uri = "mongodb://vipin1407:vipin1407@cluster0-shard-00-00-8toc1.mongodb.net:27017,cluster0-shard-00-01-8toc1.mongodb.net:27017,cluster0-shard-00-02-8toc1.mongodb.net:27017/mealTrain?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
 
 var port = process.env.PORT||8080;
@@ -17,6 +18,7 @@ var app = express();
 app.use(express.static('public'))
 
 app.use(logger('dev'));
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

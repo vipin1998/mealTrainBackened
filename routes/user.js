@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
 var authenticate = require('../authenticate');
-const cors = require('./cors');
 
 var userRoutes = express.Router();
 userRoutes.use(bodyParser.json());
@@ -12,9 +11,7 @@ userRoutes.use(bodyParser.json());
 var User = require('./models/users');
 
 
-userRoutes
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.post('/login',cors.corsWithOptions, function(req, res)
+userRoutes.post('/login',function(req, res)
 {    
     User.find({'phone' : req.body.phone,'password' : req.body.password}, function(err , old_user)
     {
@@ -34,9 +31,7 @@ userRoutes
     })
 });
 
-userRoutes
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.post('/register', cors.corsWithOptions, function(req, res)
+userRoutes.post('/register', function(req, res)
 {    
     User.find({'phone' : req.body.phone}, function(err , old_user)
     {

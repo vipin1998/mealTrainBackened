@@ -35,7 +35,7 @@ orderRoutes.get('/getDishes/:code' , function(req,res)
 
 orderRoutes.get('/getFeaturedDish' , function(req , res)
 {
-    Dish.find({"featured" : true }, function(err , dish)
+    Dish.find({"featured" : true },{_id:0,__v:0}, function(err , dish)
     {
         if(err)
         {
